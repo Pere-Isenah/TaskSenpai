@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hoverable Sidebar Menu HTML CSS & JavaScript</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- Boxicons CSS -->
+    <link flex href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+  </head>
+  <body>
+    <nav class="sidebar locked">
+      <div class="logo_items flex">
+        <span class="nav_image">
+          <img src="images/20230620_122107_0000.png" alt="logo_img" />
+        </span>
+        <span class="logo_name">TaskSenpai</span>
+        <i class="bx bx-lock-alt" id="lock-icon" title="Unlock Sidebar"></i>
+        <i class="bx bx-x" id="sidebar-close"></i>
+      </div>
+
+      <div class="menu_container">
+        <div class="menu_items">
+          <div class="menu_title">
+            <span class="line"></span>
+          </div>
+          <ul class="menu_item">
+            <li class="item">
+              <a href="#" class="link flex">
+                <i class="bx bx-home-alt"></i>
+                <span>Task</span>
+              </a>
+            </li>
+            <li class="item">
+              <a href="#" class="link flex">
+                <i class='bx bx-bullseye'></i>
+                <span>Homework</span>
+              </a>
+            </li>
+            <li class="item">
+              <a href="#" class="link flex">
+                <i class='bx bx-bullseye'></i>
+                <span>Anime Watchlist</span>
+              </a>
+            </li>
+            <li class="item">
+              <a href="#" class="link flex">
+                <i class='bx bx-task'></i>
+                <span>Completed Tasks</span>
+              </a>
+            </li>
+          </ul>
+          <div class="menu_title flex">
+            <div class="ln title"></div>
+            <span class="line"></span>
+          </div>
+          <div>
+            <div class="add-new-list flex">
+              <a href="#" class=" add flex">
+                <i class='bx bx-folder-plus'></i>
+                <span>Add New List</span>
+              </a>
+            </div>
+          </div>
+
+          <ul class="menu_item">
+            <li class="item">
+              <a href="#" class="link flex">
+                <i class="bx bx-cog"></i>
+                <span>Profile</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="sidebar_profile flex">
+          <span class="nav_image">
+            <img src="images/pfp.jpg" alt="logo_img" />
+          </span>
+          <div class="data_text">
+            <span class="name">David Oliva</span>
+            <span class="email">david@gmail.com</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Navbar -->
+      
+    </nav>
+    <section>
+      <div class="navbar-container">
+        <div class="navbar flex">
+          <i class="bx bx-menu" id="sidebar-open"></i>
+          <input type="text" placeholder="Search..." class="search_box" />
+          <span class="nav_image">
+            <img src="images/pfp.jpg" alt="logo_img" />
+          </span>
+        </div>
+    </div>
+    <div>
+
+    </div>
+    <div class="task-popup">
+      <div class="close-task-popup-con">
+      <div class="close-task-popup">&times;</div>
+      </div>
+      <div class="new-list">
+        <input class="add-list-input"placeholder="List Name">
+        <label>Select Icon</label>
+              <!-- <p>*Enter a task list name </p> -->
+
+        <div class="icon-container">
+          <div class="icon-con-container">
+            <div class="task-icon">
+              <i class='bx bx-bullseye'></i>
+            </div>
+            <div class="task-icon">
+              <i class='bx bx-run'></i>
+            </div>
+            <div class="task-icon">
+              <i class='bx bx-basket'></i>
+            </div>
+            <div class="task-icon">
+              <i class='bx bx-book' ></i>
+            </div>
+            <div class="task-icon">
+              <i class='bx bx-briefcase-alt-2'></i>
+            </div>
+            <div class="task-icon">
+              <i class='bx bx-buildings'></i>
+            </div>
+            <div class="task-icon yyy">
+              <i class='bx bx-party'></i>
+            </div>
+            <div class="task-icon">
+              <i class='bx bxs-dog'></i>
+            </div>
+            <div class="task-icon">
+              <i class='bx bx-joystick'></i>
+            </div>
+            <div class="task-icon">
+              <i class='bx bx-tv'></i>
+            </div>
+            <div class="task-icon">
+              <i class='bx bx-notepad'></i>
+            </div>
+          </div>
+        </div>
+        <div class="add-butt">Add</div>
+      </div>
+    </div>
+
+    <!-- add task section -->
+
+    <div class = "container">
+      <div class="box">
+        <div class="task-header">
+          <i class='bx bxs-bullseye'></i>
+          <h2>Homework</h2>
+        </div>
+          <form id="form">
+            <div class="add_task_con">
+                <div class="add_input_con">
+                  <input class="add_input" name="task"placeholder="Add a task">
+                </div>
+                <div class="add-btn-con">
+                  <button class="add_btn" type="submit">Add</button>
+                </div>
+            </div>
+          </form>
+          <div class="task_container">
+                  <!-- <div class="task_box">
+                      <input type="text" class="edit_input"value="A new task" readonly>
+                      <div class="task_btn_container">
+                          <button class="task_btn edit">edit</button>
+                          <button class="task_btn del">delete</button>
+                      </div>
+                  </div> -->
+          </div>
+      </div>
+  </div>
+    </section>
+
+    <script src="script.js" defer></script>
+  </body>
+</html>
