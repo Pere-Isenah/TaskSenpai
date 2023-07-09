@@ -25,8 +25,8 @@
           <div class="menu_title">
             <span class="line"></span>
           </div>
-          <ul class="menu_item">
-            <li class="item">
+          <ul class="menu_item" list-menu>
+            <!-- <li class="item">
               <a href="#" class="link flex">
                 <i class="bx bx-home-alt"></i>
                 <span>Task</span>
@@ -49,7 +49,7 @@
                 <i class='bx bx-task'></i>
                 <span>Completed Tasks</span>
               </a>
-            </li>
+            </li> -->
           </ul>
           <div class="menu_title flex">
             <div class="ln title"></div>
@@ -153,19 +153,30 @@
 
     <!-- add task section -->
 
-    <div class = "container">
-      <div class="box">
+    <div class = "container" task-container>
+      <div class="box" task-box>
         <div class="task-header">
-          <i class='bx bxs-bullseye'></i>
-          <h2>Homework</h2>
+          <div class="task-title-con">
+            <i class='bx bxs-bullseye'data-icon></i>
+            <h2 class="task-title" task-title>Homework</h2>
+          </div>
+          <div class="task-li-del-btn">
+            <i class='bx bxs-trash'></i>
+          </div>
         </div>
-          <form id="form">
+        <div class="task-count-con">
+          <div>
+            <p class="done-task"> 1 task completed</p>
+            <p class="undone-task" >3 tasks remaining</p>
+          </div>
+        </div>
+          <form id="form" action ="">
             <div class="add_task_con">
                 <div class="add_input_con">
-                  <input class="add_input" name="task"placeholder="Add a task">
+                  <input class="add_input" placeholder="Add a task">
                 </div>
                 <div class="add-btn-con">
-                  <button class="add_btn" type="submit">Add</button>
+                  <button class="add_btn">Add</button>
                 </div>
             </div>
           </form>
@@ -180,8 +191,33 @@
           </div>
       </div>
   </div>
-    </section>
+  <div class="container">
+    <div class="box">
+      <div class="task-header">
+        <div class="task-title-con ">
+          <i class='bx bxs-bullseye'></i>
+          <h2 class="task-title">Completed Task</h2>
+        </div>
+    </div>
+    <div class="task_container">
+      <div class="task_box">
+          <p class="done">test</p>
+      </div>
+</div>
 
-    <script src="script.js" defer></script>
+  </div>
+    </section>
+<template>
+  <div class="task_box">
+    <div class="content">
+      <input class="to_do_task" readonly="">
+    </div>
+    <div class="task_btn_container">
+      <i class="bx bxs-edit to_do_task"></i>
+      <i class="bx bxs-trash"></i>
+    </div>
+  </div>
+</template>
+<script src="script.js" defer></script>
   </body>
 </html>
