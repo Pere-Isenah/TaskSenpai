@@ -84,15 +84,17 @@ window.addEventListener("load", adjustSectionMargin);
 const listsContainer = document.querySelector('[list-menu]');
 const addNewList = document.querySelector(".add-new-list");
 const addListInput = document.querySelector('.add-list-input');
-const listDisplayContainer = document.querySelector('div[task-list-container]');
+const listDisplayContainer = document.querySelector('section');
 const listTitleElement = document.querySelector(".task-title");
 let selectedA = document.querySelector(".link");
 let listIconElement =  document.querySelector("[data-icon]");
-const deleteListButton = document.querySelector(".task-li-del-btn");
+const deleteListButton = document.querySelector("div[delete-task-list]");
 const undonelistCount = document.querySelector(".undone-task");
 const donelistCount = document.querySelector(".done-task");
 const taskContainer = document.querySelector("div[task-container]");
 const doneTaskContainer = document.querySelector("div[completed-task-con]");
+const delCompletedTaskButton = document.querySelector("div[del-completed-task]");
+const errorParagraph = document.querySelector('.task-popup p');
 
 const delButton = document.querySelector('.bxs-trash');
 const taskBox = document.querySelector("div[task-box]");
@@ -106,9 +108,13 @@ listsContainer.addEventListener('click', e => {
   saveAndRender()
 });
 
+
 // Event listener for adding a new list
 addNewList.addEventListener("click", function(){
   document.querySelector(".task-popup").classList.add("active");
+
+  // Clear any existing error messages
+  errorParagraph.textContent = '';
 });
 // Close pop up modal
 document.querySelector(".close-task-popup").addEventListener("click", function(){
@@ -151,27 +157,29 @@ const menuItem = document.querySelector('.menu_item');
 // Add click event listener to the add button
 addButt.addEventListener('click', () => {
   const selectedIcon = document.querySelector('.selected-icon');
-  const inputValue = addListInput.value;
-  
-  if (addListInput.value == ""){
-    NoListName = document.createElement("p");
-    NoListName.textContent= "*Enter a task list name"
-    const taskPop = document.querySelector(".task-popup");
-    taskPop.insertBefore(NoListName, taskPop.children[1]);
-  } else if(!selectedIcon) {
-    NoIcon = document.createElement("p");
-    NoIcon.textContent= "*Enter a task list name"
-    const NewList = document.querySelector(".new-list");
-    NewList.insertBefore(NoIcon, NewList.children[2]);
+  const inputValue = addListInput.value.trim()
+  const capitalizedValue = inputValue.charAt(0).toUpperCase() + inputValue.slice(1);
+  // Check if both input value and icon are empty
+  if (inputValue.trim() === '' && !selectedIcon) {
+    errorParagraph.innerHTML = '*Enter a list name' + '<br>' + '*Select an icon';
+  } else if (inputValue.trim() === '') {
+    errorParagraph.textContent = '*Enter a list name';
+  } else if (!selectedIcon) {
+    errorParagraph.textContent = '*Select an icon';
+  } else if (inputValue.length > 20) {
+    errorParagraph.textContent = "Name is too long";
   } else {
-    const listIcon = getSelectedIcon(selectedIcon)
-    const list = createList(inputValue,listIcon);
+    const listIcon = getSelectedIcon(selectedIcon);
+    const list = createList(capitalizedValue, listIcon);
 
     addListInput.value = '';
-    lists.push(list)
-    saveAndRender()
+    lists.push(list);
+    document.querySelector(".task-popup").classList.remove("active");
+    saveAndRender();
+
   }
 });
+
 
 // Event listener for task completion
 taskContainer.addEventListener('click', e => {
@@ -212,6 +220,8 @@ form.addEventListener("submit", e => {
   const taskCreate = createTask(taskInputValue)
   if (taskInputValue === ""){
     alert("Enter a task") 
+  } else if (taskInputValue.length > 100) {
+    alert("task name too long") 
   } else {
     const selectedList = lists.find(list => list.id === selectedListId);
     selectedList.tasks.push(taskCreate);
@@ -222,8 +232,8 @@ form.addEventListener("submit", e => {
 
 doneTaskContainer.addEventListener("click", e => {
   const taskBox = e.target.closest(".task_box");
-  if (taskBox.classList.contains("task_box")) {
-    const taskId = taskBox.dataset.taskId;
+  if (taskBox) {
+    const taskId = taskBox.getAttribute("data-task-id");
 
     // Find the selected list
     const selectedList = lists.find(list => list.id === selectedListId);
@@ -245,6 +255,11 @@ doneTaskContainer.addEventListener("click", e => {
   }
 });
 
+delCompletedTaskButton.addEventListener('click', () => {
+  const selectedList = lists.find(list => list.id === selectedListId);
+  selectedList.tasks = selectedList.tasks.filter(task => !task.complete);
+  saveAndRender();
+});
 
 // Helper function to get the selected icon
 function getSelectedIcon(ChosenIcon) {
@@ -277,7 +292,8 @@ function render() {
   clearElement(listsContainer)
   renderLists()
   const selectedList = lists.find(list => list.id === selectedListId)
-  
+  console.log(selectedList)
+
   if (!selectedListId) {
     listDisplayContainer.style.display = 'none'
   } else {
@@ -323,11 +339,13 @@ function renderLists() {
 // Render the tasks of the selected list
 function renderTasks(selectedList) {
   clearElement(taskContainer);
-  // clearElement(doneTaskContainer);
 
-  selectedList.tasks.forEach(task => {
+  const undoneTasks = selectedList.tasks.filter(task => !task.complete);
+
+  undoneTasks.forEach(task => {
     const taskBox = document.createElement("div");
     taskBox.classList.add("task_box");
+    taskBox.setAttribute("data-task-id", task.id);
 
     const content = document.createElement("div");
     content.classList.add("content");
@@ -353,13 +371,6 @@ function renderTasks(selectedList) {
     taskBox.appendChild(content);
     taskBox.appendChild(taskBtnContainer);
     taskContainer.appendChild(taskBox);
-
-    // if (task.complete) {
-    //   doneTaskContainer.appendChild(taskBox);
-    // } else {
-    //   taskContainer.appendChild(taskBox);
-
-    // }
 
     editButton.addEventListener("click", function() {
       if (editButton.classList.contains("bxs-edit")) {
@@ -393,6 +404,7 @@ function renderTasks(selectedList) {
   renderDoneTaskCount(selectedList);
 }
 
+
 // Clear all child elements of a given element
 function clearElement(element) {
   while (element.firstChild) {
@@ -415,6 +427,7 @@ function renderDoneTaskCount(selectedList) {
 }
 
 // Render the done tasks in the completed task container
+// Render the done tasks in the completed task container
 function renderDoneTasks(selectedList) {
   clearElement(doneTaskContainer);
 
@@ -434,7 +447,16 @@ function renderDoneTasks(selectedList) {
   });
 
   renderDoneTaskCount(selectedList);
+
+  if (selectedList.tasks.some(task => task.complete)) {
+    delCompletedTaskButton.style.display = "block";
+  } else {
+    delCompletedTaskButton.style.display = "none";
+  }
 }
+
 
 // Initial rendering of the lists and the selected list's tasks
 render();
+
+
