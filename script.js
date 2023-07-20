@@ -295,6 +295,9 @@ function render() {
   console.log(selectedList)
 
  
+  if (!selectedListId) {
+    listDisplayContainer.style.display = 'none'
+  } else {
     listDisplayContainer.style.display = ''
     listTitleElement.textContent = selectedList.name
     listIconElement.className = selectedList.icon; 
@@ -304,6 +307,7 @@ function render() {
     clearElement(taskContainer)
     renderTasks(selectedList)
     renderDoneTasks(selectedList)
+  }
   
 }
 
